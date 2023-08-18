@@ -1,10 +1,13 @@
 package com.yndoo.goodwords
 
+import android.app.Activity
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.databinding.DataBindingUtil
 import com.yndoo.goodwords.databinding.ActivityMainBinding
+import kotlin.math.log
 
 class MainActivity : AppCompatActivity() {
 
@@ -22,12 +25,26 @@ class MainActivity : AppCompatActivity() {
         sentenceList.add("야구에 만약이란 없습니다. 만약이란 걸 붙이면 다 우승하죠.")
         sentenceList.add("지식은 사랑이자, 빛이자, 통찰력이다.")
 
+        if (intent.getStringExtra("No?")=="No"){
+            //No메시지가 오면 데이터요청임!
+            //list를 보내줌
+            val intent3 = Intent()
+            intent3.putStringArrayListExtra("list",ArrayList(sentenceList))
+            setResult(Activity.RESULT_OK, intent3)
+
+            finish()
+        }
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         binding.showAllSentenceBtn.setOnClickListener {
+            // 전체 리스트 보기 버튼 눌리면 SentenceActivity로감
+
             val intent = Intent(this, SentenceActivity::class.java)
             startActivity(intent)
         }
 
-        binding.goodwordTextView.setText(sentenceList.random())
+        binding.goodwordTextView.text = sentenceList.random()
+
+
     }
 }
